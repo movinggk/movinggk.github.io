@@ -223,8 +223,8 @@ $$
 
 ## Problem 7[Mercer decomposition]
 *Consider a probability distribution $p$ in a set $\mathcal X$, a positive-definite kernel $k: \mathcal X \times \mathcal X \rightarrow \mathbb R$, and the operator $T$ defined on $L_2(p)$ as $T f(y) = \int_{\mathcal X} k(x, y) f(x) \,\mathrm{d} {p(x)}$.*
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- *Show that if $\int_{\mathcal X} \int_{\mathcal X} k(x, y)^2 \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)}$ is finite, then the operator $T$ is bounded(it is an instance of Hilbert-Schmidt integral operator).*
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- *Given an orthonormal basis $(\varphi_i)_{i \in I}$ of $L_2(p)$ composed of eigenvectors for $T$(which is assumed to exist), show that the corresponding eigenvalues $(\lambda_i)_{i \in I}$ are nonnegative and $k(x, x') = \sum_{i \in I} \lambda_i \varphi_i(x) \varphi_i (x')$ (convergence meant in the norm $L_2(p)$).*
+> *Show that if $\int_{\mathcal X} \int_{\mathcal X} k(x, y)^2 \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)}$ is finite, then the operator $T$ is bounded(it is an instance of Hilbert-Schmidt integral operator).*
+> *Given an orthonormal basis $(\varphi_i)_{i \in I}$ of $L_2(p)$ composed of eigenvectors for $T$(which is assumed to exist), show that the corresponding eigenvalues $(\lambda_i)_{i \in I}$ are nonnegative and $k(x, x') = \sum_{i \in I} \lambda_i \varphi_i(x) \varphi_i (x')$ (convergence meant in the norm $L_2(p)$).*
 
 ### Solution
 
