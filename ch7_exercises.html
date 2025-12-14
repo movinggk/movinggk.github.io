@@ -226,7 +226,7 @@
             </header>
 
             <div id="content">
-                <p>Loading problems...</p>
+                <p>Select a problem from the sidebar to view its solution.</p>
             </div>
 
             <div class="comments-section">
@@ -252,14 +252,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // Configure marked for better rendering
+        // Configure marked
         marked.setOptions({
             breaks: true,
-            gfm: true,
-            pedantic: false,
-            sanitize: false,
-            smartLists: true,
-            smartypants: false
+            gfm: true
         });
 
         let problems = {};
@@ -269,42 +265,40 @@
         fetch('ltfp_exercise_ch7.md')
             .then(response => response.text())
             .then(markdown => {
-                // Use regex to split by problem headers
-                // Match: ## Problem X or ## Problem X[title]
-                const problemPattern = /^## Problem (\d+)(\[.*?\])?$/gm;
-                const allMatches = [];
-                let match;
+                // Split by problem markers (## Problem X)
+                const problemRegex = /^## Problem (\d+)(\[(.*?)\])?/gm;
+                const lines = markdown.split('\n');
                 
-                // Find all problem positions
-                while ((match = problemPattern.exec(markdown)) !== null) {
-                    allMatches.push({
-                        number: match[1],
-                        index: match.index,
-                        fullMatch: match[0]
-                    });
+                let currentProblem = null;
+                let problemLines = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const problemMatch = line.match(/^## Problem (\d+)(\[(.*?)\])?/);
+                    
+                    if (problemMatch) {
+                        // Save previous problem
+                        if (currentProblem !== null && problemLines.length > 0) {
+                            problems[currentProblem] = problemLines.join('\n');
+                        }
+                        // Start new problem
+                        currentProblem = problemMatch[1];
+                        problemLines = [line];
+                    } else if (line.trim() === '---') {
+                        // End of problem - save it
+                        if (currentProblem !== null && problemLines.length > 0) {
+                            problems[currentProblem] = problemLines.join('\n');
+                            currentProblem = null;
+                            problemLines = [];
+                        }
+                    } else if (currentProblem !== null) {
+                        problemLines.push(line);
+                    }
                 }
                 
-                // Extract each problem
-                for (let i = 0; i < allMatches.length; i++) {
-                    const startIndex = allMatches[i].index;
-                    const endIndex = i < allMatches.length - 1 
-                        ? allMatches[i + 1].index 
-                        : markdown.length;
-                    
-                    let problemContent = markdown.substring(startIndex, endIndex);
-                    // Remove trailing '---' separator if it exists
-                    problemContent = problemContent.replace(/\n---\s*$/, '').trim();
-                    
-                    problems[allMatches[i].number] = problemContent;
-                }
-                
-                // Debug: log parsed problems
-                console.log('Parsed problems:', Object.keys(problems).sort((a, b) => parseInt(a) - parseInt(b)));
-                if (Object.keys(problems).length === 0) {
-                    console.error('No problems found! Check markdown format.');
-                    document.getElementById('content').innerHTML = 
-                        '<p>Error: No problems found in markdown file. Please check the file format.</p>';
-                    return;
+                // Save last problem if exists
+                if (currentProblem !== null && problemLines.length > 0) {
+                    problems[currentProblem] = problemLines.join('\n');
                 }
 
                 // Set up navigation
@@ -318,7 +312,7 @@
             .catch(error => {
                 console.error('Error loading markdown:', error);
                 document.getElementById('content').innerHTML = 
-                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p><p>Error details: ' + error.message + '</p>';
+                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p>';
             });
 
         function setupNavigation() {
@@ -332,6 +326,42 @@
                     window.history.pushState({problem: problemId}, '', `?problem=${problemId}`);
                 });
             });
+        }
+
+        // Protect math expressions from markdown parser
+        function protectMath(text) {
+            const mathPlaceholders = [];
+            let placeholderIndex = 0;
+            
+            // Protect display math first ($$...$$) to avoid conflicts with inline math
+            text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+                const placeholder = `MATH_DISPLAY_${placeholderIndex}_PLACEHOLDER`;
+                mathPlaceholders.push({ placeholder, original: match });
+                placeholderIndex++;
+                return placeholder;
+            });
+            
+            // Protect inline math: $...$ 
+            text = text.replace(/\$([^$\n]+?)\$/g, (match) => {
+                const placeholder = `MATH_INLINE_${placeholderIndex}_PLACEHOLDER`;
+                mathPlaceholders.push({ placeholder, original: match });
+                placeholderIndex++;
+                return placeholder;
+            });
+            
+            return { text, mathPlaceholders };
+        }
+        
+        // Restore math expressions after markdown parsing
+        function restoreMath(html, mathPlaceholders) {
+            // Restore in reverse order to maintain indices
+            for (let i = mathPlaceholders.length - 1; i >= 0; i--) {
+                const { placeholder, original } = mathPlaceholders[i];
+                // Escape special regex characters in placeholder
+                const escapedPlaceholder = placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                html = html.replace(new RegExp(escapedPlaceholder, 'g'), original);
+            }
+            return html;
         }
 
         function loadProblem(problemId) {
@@ -348,30 +378,26 @@
                 activeLink.classList.add('active');
             }
 
-            // Render problem
-            const html = marked.parse(problems[problemId]);
-            document.getElementById('content').innerHTML = html;
+            // Protect math, parse markdown, then restore math
+            const { text: protectedText, mathPlaceholders } = protectMath(problems[problemId]);
+            const html = marked.parse(protectedText);
+            const finalHtml = restoreMath(html, mathPlaceholders);
+            
+            document.getElementById('content').innerHTML = finalHtml;
 
-            // Scroll to top
-            document.getElementById('content').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            // Trigger MathJax rendering - clear previous typesetting first
-            if (window.MathJax) {
-                MathJax.typesetClear();
-                setTimeout(() => {
-                    MathJax.typesetPromise().then(() => {
-                        console.log('MathJax rendered successfully');
-                    }).catch(function (err) {
+            // Trigger MathJax rendering
+            setTimeout(() => {
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(function (err) {
                         console.error('MathJax rendering error:', err);
-                        // Retry once
                         setTimeout(() => {
                             if (window.MathJax) {
                                 MathJax.typesetPromise();
                             }
                         }, 500);
                     });
-                }, 200);
-            }
+                }
+            }, 100);
         }
 
         // Handle browser back/forward
