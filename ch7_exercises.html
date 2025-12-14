@@ -328,6 +328,42 @@
             });
         }
 
+        // Protect math expressions from markdown parser
+        function protectMath(text) {
+            const mathPlaceholders = [];
+            let placeholderIndex = 0;
+            
+            // Protect display math first ($$...$$) to avoid conflicts with inline math
+            text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
+                const placeholder = `MATH_DISPLAY_${placeholderIndex}_PLACEHOLDER`;
+                mathPlaceholders.push({ placeholder, original: match });
+                placeholderIndex++;
+                return placeholder;
+            });
+            
+            // Protect inline math: $...$ 
+            text = text.replace(/\$([^$\n]+?)\$/g, (match) => {
+                const placeholder = `MATH_INLINE_${placeholderIndex}_PLACEHOLDER`;
+                mathPlaceholders.push({ placeholder, original: match });
+                placeholderIndex++;
+                return placeholder;
+            });
+            
+            return { text, mathPlaceholders };
+        }
+        
+        // Restore math expressions after markdown parsing
+        function restoreMath(html, mathPlaceholders) {
+            // Restore in reverse order to maintain indices
+            for (let i = mathPlaceholders.length - 1; i >= 0; i--) {
+                const { placeholder, original } = mathPlaceholders[i];
+                // Escape special regex characters in placeholder
+                const escapedPlaceholder = placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                html = html.replace(new RegExp(escapedPlaceholder, 'g'), original);
+            }
+            return html;
+        }
+
         function loadProblem(problemId) {
             if (!problems[problemId]) {
                 document.getElementById('content').innerHTML = 
@@ -342,9 +378,12 @@
                 activeLink.classList.add('active');
             }
 
-            // Render problem
-            const html = marked.parse(problems[problemId]);
-            document.getElementById('content').innerHTML = html;
+            // Protect math, parse markdown, then restore math
+            const { text: protectedText, mathPlaceholders } = protectMath(problems[problemId]);
+            const html = marked.parse(protectedText);
+            const finalHtml = restoreMath(html, mathPlaceholders);
+            
+            document.getElementById('content').innerHTML = finalHtml;
 
             // Trigger MathJax rendering
             setTimeout(() => {
