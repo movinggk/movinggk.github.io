@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ch.7: Solutions for Exercises - LTFP</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            }
+        };
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        header h1 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-style: italic;
+            font-size: 1.1em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #764ba2;
+        }
+
+        .back-link::before {
+            content: "← ";
+        }
+
+        h2 {
+            color: #764ba2;
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        h3 {
+            color: #555;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .problem-statement {
+            font-style: italic;
+            color: #444;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 3px solid #667eea;
+        }
+
+        .solution {
+            margin-top: 15px;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px solid #e0e0e0;
+            margin: 40px 0;
+        }
+
+        /* MathJax styling */
+        .MathJax {
+            font-size: 1.1em;
+        }
+
+        /* Code and definitions */
+        strong {
+            color: #764ba2;
+        }
+
+        /* Comments section */
+        .comments-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .comments-section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-top: none;
+            padding-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">Back to Home</a>
+        
+        <header>
+            <h1>Ch.7: Solutions for Exercises</h1>
+            <p>Dongha Lee</p>
+        </header>
+
+        <div id="content">
+            <!-- Content will be loaded from markdown -->
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h2>Comments</h2>
+            <script src="https://giscus.app/client.js"
+                data-repo="movinggk/movinggk.github.io"
+                data-repo-id="R_kgDOQoB0Ew"
+                data-category="exercise_discussion"
+                data-category-id="DIC_kwDOQoB0E84CzwmU"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+            </script>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // Configure marked for better rendering
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        // Load and convert markdown to HTML
+        fetch('ltfp_exercise_ch7.md')
+            .then(response => response.text())
+            .then(markdown => {
+                // Convert markdown to HTML
+                let html = marked.parse(markdown);
+                document.getElementById('content').innerHTML = html;
+                
+                // Trigger MathJax rendering after a short delay
+                setTimeout(() => {
+                    if (window.MathJax) {
+                        MathJax.typesetPromise().catch(function (err) {
+                            console.error('MathJax rendering error:', err);
+                            // Retry once
+                            setTimeout(() => {
+                                if (window.MathJax) {
+                                    MathJax.typesetPromise();
+                                }
+                            }, 500);
+                        });
+                    }
+                }, 100);
+            })
+            .catch(error => {
+                console.error('Error loading markdown:', error);
+                document.getElementById('content').innerHTML = 
+                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p>';
+            });
+    </script>
+</body>
+</html>
+
