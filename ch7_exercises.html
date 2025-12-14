@@ -344,13 +344,10 @@
             
             // Step 1: Protect display math ($$...$$) first - must be done before inline
             text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
-                // Use HTML-like placeholder that marked won't modify
-                const placeholder = `<span data-math-display="${placeholderIndex}"></span>`;
+                const placeholder = `MATHPLACEHOLDER_DISPLAY_${placeholderIndex}`;
                 mathPlaceholders.push({ 
                     placeholder, 
-                    original: match,
-                    type: 'display',
-                    index: placeholderIndex
+                    original: match
                 });
                 placeholderIndex++;
                 return placeholder;
@@ -359,15 +356,13 @@
             // Step 2: Protect inline math ($...$) 
             text = text.replace(/\$([^$\n]+?)\$/g, (match) => {
                 // Skip if this is already a placeholder
-                if (match.includes('data-math')) {
+                if (match.includes('MATHPLACEHOLDER')) {
                     return match;
                 }
-                const placeholder = `<span data-math-inline="${placeholderIndex}"></span>`;
+                const placeholder = `MATHPLACEHOLDER_INLINE_${placeholderIndex}`;
                 mathPlaceholders.push({ 
                     placeholder, 
-                    original: match,
-                    type: 'inline',
-                    index: placeholderIndex
+                    original: match
                 });
                 placeholderIndex++;
                 return placeholder;
@@ -378,18 +373,12 @@
         
         // Restore math expressions after markdown parsing
         function restoreMath(html, mathPlaceholders) {
-            // Restore by finding the span elements and replacing them
-            mathPlaceholders.forEach(({ placeholder, original, type, index }) => {
-                if (type === 'display') {
-                    // Find span with data-math-display attribute
-                    const regex = new RegExp(`<span[^>]*data-math-display="${index}"[^>]*></span>`, 'gi');
-                    html = html.replace(regex, original);
-                } else {
-                    // Find span with data-math-inline attribute
-                    const regex = new RegExp(`<span[^>]*data-math-inline="${index}"[^>]*></span>`, 'gi');
-                    html = html.replace(regex, original);
-                }
-            });
+            // Simple string replacement - restore in reverse order to avoid conflicts
+            for (let i = mathPlaceholders.length - 1; i >= 0; i--) {
+                const { placeholder, original } = mathPlaceholders[i];
+                // Use split/join for reliable replacement
+                html = html.split(placeholder).join(original);
+            }
             return html;
         }
 
