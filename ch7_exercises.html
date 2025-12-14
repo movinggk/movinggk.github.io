@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ch.7: Solutions for Exercises - LTFP</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            }
+        };
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #000;
+            background: #fff;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            border-right: 1px solid #000;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: normal;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            color: #000;
+            text-decoration: underline;
+            font-size: 0.9em;
+        }
+
+        .sidebar a:hover {
+            text-decoration: none;
+        }
+
+        .sidebar a.active {
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 20px 40px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .back-link:hover {
+            text-decoration: none;
+        }
+
+        header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #000;
+        }
+
+        header h1 {
+            color: #000;
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        header p {
+            color: #000;
+            font-size: 1em;
+        }
+
+        .problem-content {
+            display: none;
+        }
+
+        .problem-content.active {
+            display: block;
+        }
+
+        h2 {
+            color: #000;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #000;
+            font-weight: normal;
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        h3 {
+            color: #000;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin: 30px 0;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+        }
+
+        .comments-section h2 {
+            color: #000;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-top: none;
+            padding-top: 0;
+            font-weight: normal;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Ch.7 Exercises</h2>
+            <ul id="problem-list">
+                <li><a href="#" data-problem="1">Problem 1</a></li>
+                <li><a href="#" data-problem="2">Problem 2</a></li>
+                <li><a href="#" data-problem="3">Problem 3</a></li>
+                <li><a href="#" data-problem="4">Problem 4</a></li>
+                <li><a href="#" data-problem="5">Problem 5</a></li>
+                <li><a href="#" data-problem="6">Problem 6 [Mercer kernels]</a></li>
+                <li><a href="#" data-problem="7">Problem 7 [Mercer decomposition]</a></li>
+                <li><a href="#" data-problem="8">Problem 8</a></li>
+                <li><a href="#" data-problem="10">Problem 10</a></li>
+                <li><a href="#" data-problem="11">Problem 11</a></li>
+                <li><a href="#" data-problem="12">Problem 12</a></li>
+                <li><a href="#" data-problem="13">Problem 13 [Unregularized constant term]</a></li>
+                <li><a href="#" data-problem="14">Problem 14 [Limit of Gaussian kernel]</a></li>
+                <li><a href="#" data-problem="15">Problem 15 [Optimization of the kernel]</a></li>
+                <li><a href="#" data-problem="16">Problem 16</a></li>
+                <li><a href="#" data-problem="17">Problem 17 [Kernel PCA]</a></li>
+                <li><a href="#" data-problem="18">Problem 18 [Kernel K-means]</a></li>
+                <li><a href="#" data-problem="19">Problem 19 [Kernel quadrature]</a></li>
+                <li><a href="#" data-problem="20">Problem 20</a></li>
+                <li><a href="#" data-problem="21">Problem 21</a></li>
+                <li><a href="#" data-problem="22">Problem 22</a></li>
+                <li><a href="#" data-problem="23">Problem 23</a></li>
+            </ul>
+        </div>
+
+        <div class="content-area">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            
+            <header>
+                <h1>Ch.7: Solutions for Exercises</h1>
+                <p>Dongha Lee</p>
+            </header>
+
+            <div id="content">
+                <p>Select a problem from the sidebar to view its solution.</p>
+            </div>
+
+            <div class="comments-section">
+                <h2>Comments</h2>
+                <script src="https://giscus.app/client.js"
+                    data-repo="movinggk/movinggk.github.io"
+                    data-repo-id="R_kgDOQoB0Ew"
+                    data-category="exercise_discussion"
+                    data-category-id="DIC_kwDOQoB0E84CzwmU"
+                    data-mapping="pathname"
+                    data-strict="0"
+                    data-reactions-enabled="1"
+                    data-emit-metadata="0"
+                    data-input-position="bottom"
+                    data-theme="preferred_color_scheme"
+                    data-lang="ko"
+                    crossorigin="anonymous"
+                    async>
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // Configure marked
+        marked.setOptions({
+            breaks: true,
+            gfm: true
+        });
+
+        let problems = {};
+        let currentProblem = null;
+
+        // Load markdown and parse problems
+        fetch('ltfp_exercise_ch7.md')
+            .then(response => response.text())
+            .then(markdown => {
+                // Split by problem markers (## Problem X)
+                const problemRegex = /^## Problem (\d+)(\[(.*?)\])?/gm;
+                const lines = markdown.split('\n');
+                
+                let currentProblem = null;
+                let problemLines = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const problemMatch = line.match(/^## Problem (\d+)(\[(.*?)\])?/);
+                    
+                    if (problemMatch) {
+                        // Save previous problem
+                        if (currentProblem !== null && problemLines.length > 0) {
+                            problems[currentProblem] = problemLines.join('\n');
+                        }
+                        // Start new problem
+                        currentProblem = problemMatch[1];
+                        problemLines = [line];
+                    } else if (line.trim() === '---') {
+                        // End of problem - save it
+                        if (currentProblem !== null && problemLines.length > 0) {
+                            problems[currentProblem] = problemLines.join('\n');
+                            currentProblem = null;
+                            problemLines = [];
+                        }
+                    } else if (currentProblem !== null) {
+                        problemLines.push(line);
+                    }
+                }
+                
+                // Save last problem if exists
+                if (currentProblem !== null && problemLines.length > 0) {
+                    problems[currentProblem] = problemLines.join('\n');
+                }
+
+                // Set up navigation
+                setupNavigation();
+                
+                // Load first problem by default
+                const urlParams = new URLSearchParams(window.location.search);
+                const problemId = urlParams.get('problem') || '1';
+                loadProblem(problemId);
+            })
+            .catch(error => {
+                console.error('Error loading markdown:', error);
+                document.getElementById('content').innerHTML = 
+                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p>';
+            });
+
+        function setupNavigation() {
+            const links = document.querySelectorAll('.sidebar a[data-problem]');
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const problemId = link.getAttribute('data-problem');
+                    loadProblem(problemId);
+                    // Update URL without reload
+                    window.history.pushState({problem: problemId}, '', `?problem=${problemId}`);
+                });
+            });
+        }
+
+        function loadProblem(problemId) {
+            if (!problems[problemId]) {
+                document.getElementById('content').innerHTML = 
+                    '<p>Problem not found.</p>';
+                return;
+            }
+
+            // Update active link
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            const activeLink = document.querySelector(`.sidebar a[data-problem="${problemId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Render problem
+            const html = marked.parse(problems[problemId]);
+            document.getElementById('content').innerHTML = html;
+
+            // Trigger MathJax rendering
+            setTimeout(() => {
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(function (err) {
+                        console.error('MathJax rendering error:', err);
+                        setTimeout(() => {
+                            if (window.MathJax) {
+                                MathJax.typesetPromise();
+                            }
+                        }, 500);
+                    });
+                }
+            }, 100);
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', (e) => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const problemId = urlParams.get('problem') || '1';
+            loadProblem(problemId);
+        });
+    </script>
+</body>
+</html>
+

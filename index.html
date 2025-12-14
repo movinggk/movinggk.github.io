@@ -12,98 +12,76 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            color: #000;
+            background: #fff;
             padding: 20px;
         }
 
         .container {
             max-width: 900px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
+            background: #fff;
         }
 
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
+            background: #fff;
+            color: #000;
+            padding: 20px 0;
+            border-bottom: 1px solid #000;
         }
 
         header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
+            font-size: 2em;
+            margin-bottom: 5px;
+            font-weight: normal;
         }
 
         header p {
-            font-size: 1.2em;
-            opacity: 0.9;
+            font-size: 1em;
         }
 
         .content {
-            padding: 40px;
+            padding: 20px 0;
         }
 
         section {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         section h2 {
-            color: #667eea;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e0e0e0;
+            color: #000;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #000;
+            font-weight: normal;
         }
 
         .info-item {
-            margin-bottom: 15px;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .info-item::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: #764ba2;
-            font-size: 1.2em;
+            margin-bottom: 10px;
         }
 
         .info-item strong {
-            color: #555;
+            color: #000;
             display: inline-block;
             min-width: 120px;
         }
 
         .links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .link-button {
             display: inline-block;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-weight: 500;
+            padding: 5px 10px;
+            color: #000;
+            text-decoration: underline;
         }
 
         .link-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            text-decoration: none;
         }
 
         .publications {
@@ -112,37 +90,22 @@
 
         .publications li {
             margin-bottom: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            border-radius: 4px;
+            padding: 10px 0;
         }
 
         .publications li strong {
-            color: #764ba2;
+            color: #000;
         }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            background: #f8f9fa;
-            color: #666;
+            text-align: left;
+            padding: 20px 0;
+            border-top: 1px solid #000;
+            color: #000;
             font-size: 0.9em;
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 40px 20px;
-            }
-
-            header h1 {
-                font-size: 2em;
-            }
-
-            .content {
-                padding: 30px 20px;
-            }
-
             .info-item strong {
                 display: block;
                 margin-bottom: 5px;
@@ -205,7 +168,7 @@
             <section id="links">
                 <h2>Links & Resources</h2>
                 <div class="links">
-                    <a href="ltfp_exercise_ch7.html" class="link-button">LTFP Exercise Solutions</a>
+                    <a href="ch7_exercises.html" class="link-button">Ch.7 Exercises</a>
                     <!-- Add more links as needed -->
                     <!-- <a href="#" class="link-button">CV/Resume</a> -->
                     <!-- <a href="#" class="link-button">GitHub</a> -->
