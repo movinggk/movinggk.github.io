@@ -333,18 +333,45 @@
             const mathPlaceholders = [];
             let placeholderIndex = 0;
             
-            // Protect display math first ($$...$$) to avoid conflicts with inline math
-            text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
-                const placeholder = `MATH_DISPLAY_${placeholderIndex}_PLACEHOLDER`;
-                mathPlaceholders.push({ placeholder, original: match });
-                placeholderIndex++;
-                return placeholder;
-            });
+            // Use a unique marker format that markdown won't modify
+            // Using a very specific pattern that won't appear in normal text
+            const createPlaceholder = (type, index) => {
+                return `\uE000MATH${type}${index}\uE001`;
+            };
             
-            // Protect inline math: $...$ 
+            // First, mark all $$...$$ as display math (process in reverse to preserve positions)
+            const displayMathMatches = [];
+            let displayMatch;
+            const displayRegex = /\$\$([\s\S]*?)\$\$/g;
+            while ((displayMatch = displayRegex.exec(text)) !== null) {
+                displayMathMatches.push({
+                    start: displayMatch.index,
+                    end: displayMatch.index + displayMatch[0].length,
+                    match: displayMatch[0]
+                });
+            }
+            
+            // Replace display math from end to start to preserve indices
+            for (let i = displayMathMatches.length - 1; i >= 0; i--) {
+                const { start, end, match } = displayMathMatches[i];
+                const placeholder = createPlaceholder('DISPLAY', placeholderIndex);
+                mathPlaceholders.push({ 
+                    placeholder, 
+                    original: match,
+                    type: 'display'
+                });
+                text = text.substring(0, start) + placeholder + text.substring(end);
+                placeholderIndex++;
+            }
+            
+            // Now protect inline math: $...$ (but not $$)
             text = text.replace(/\$([^$\n]+?)\$/g, (match) => {
-                const placeholder = `MATH_INLINE_${placeholderIndex}_PLACEHOLDER`;
-                mathPlaceholders.push({ placeholder, original: match });
+                const placeholder = createPlaceholder('INLINE', placeholderIndex);
+                mathPlaceholders.push({ 
+                    placeholder, 
+                    original: match,
+                    type: 'inline'
+                });
                 placeholderIndex++;
                 return placeholder;
             });
@@ -354,12 +381,12 @@
         
         // Restore math expressions after markdown parsing
         function restoreMath(html, mathPlaceholders) {
-            // Restore in reverse order to maintain indices
+            // Restore using simple string replacement - most reliable
+            // Process in reverse to handle nested cases
             for (let i = mathPlaceholders.length - 1; i >= 0; i--) {
                 const { placeholder, original } = mathPlaceholders[i];
-                // Escape special regex characters in placeholder
-                const escapedPlaceholder = placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                html = html.replace(new RegExp(escapedPlaceholder, 'g'), original);
+                // Use split/join for exact replacement
+                html = html.split(placeholder).join(original);
             }
             return html;
         }
