@@ -38,7 +38,7 @@ Now letting $k(x, \cdot) = k_{\psi(x)}$, it can be realized that this is a repro
 ---
 
 ## Problem 2
-*Show that if $k: \mathcal X \times \mathcal X \rightarrow \mathbb R$ is a positive-definite kernel, so is the unction $(x, x') \mapsto e^{k(x, x')}$.*
+*Show that if $k: \mathcal X \times \mathcal X \rightarrow \mathbb R$ is a positive-definite kernel, so is the function $(x, x') \mapsto e^{k(x, x')}$.*
 
 ### Solution
 
