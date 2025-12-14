@@ -287,7 +287,7 @@ This is exactly the same as the Nynstr\"om approximation.
 
 ---
 
-## Exercise 9
+## Problem 9
 *Show that the matrix $K - K(V, I) K(I, I)^+ K(I, V)$ is positive-semidefinite. If $\|M\|_*$ denotes the nuclear norm(sum of absolute values of eigenvalues of symmetric matrix $M$), show that the approximation error $\|K - K(V, I) K(I, I)^+ K(I, V)\|_*$ can be computed without the need to compute the entire matrix $K$.*
 
 ### Solution
