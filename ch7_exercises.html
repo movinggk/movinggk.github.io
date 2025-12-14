@@ -147,6 +147,24 @@
             margin-bottom: 15px;
         }
 
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        ul li {
+            list-style-type: disc;
+        }
+
+        ol li {
+            list-style-type: decimal;
+        }
+
         hr {
             border: none;
             border-top: 1px solid #000;
@@ -255,7 +273,9 @@
         // Configure marked
         marked.setOptions({
             breaks: true,
-            gfm: true
+            gfm: true,
+            pedantic: false,
+            sanitize: false
         });
 
         let problems = {};
