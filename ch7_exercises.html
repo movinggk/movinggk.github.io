@@ -252,10 +252,19 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // Configure marked
+        // Configure marked with custom renderer to preserve math
+        const renderer = new marked.Renderer();
+        
+        // Override paragraph renderer to preserve math placeholders
+        const originalParagraph = renderer.paragraph;
+        renderer.paragraph = function(text) {
+            return '<p>' + text + '</p>\n';
+        };
+        
         marked.setOptions({
             breaks: true,
-            gfm: true
+            gfm: true,
+            renderer: renderer
         });
 
         let problems = {};
@@ -333,18 +342,33 @@
             const mathPlaceholders = [];
             let placeholderIndex = 0;
             
-            // Protect display math first ($$...$$) to avoid conflicts with inline math
+            // Step 1: Protect display math ($$...$$) first - must be done before inline
             text = text.replace(/\$\$([\s\S]*?)\$\$/g, (match) => {
-                const placeholder = `MATH_DISPLAY_${placeholderIndex}_PLACEHOLDER`;
-                mathPlaceholders.push({ placeholder, original: match });
+                // Use HTML-like placeholder that marked won't modify
+                const placeholder = `<span data-math-display="${placeholderIndex}"></span>`;
+                mathPlaceholders.push({ 
+                    placeholder, 
+                    original: match,
+                    type: 'display',
+                    index: placeholderIndex
+                });
                 placeholderIndex++;
                 return placeholder;
             });
             
-            // Protect inline math: $...$ 
+            // Step 2: Protect inline math ($...$) 
             text = text.replace(/\$([^$\n]+?)\$/g, (match) => {
-                const placeholder = `MATH_INLINE_${placeholderIndex}_PLACEHOLDER`;
-                mathPlaceholders.push({ placeholder, original: match });
+                // Skip if this is already a placeholder
+                if (match.includes('data-math')) {
+                    return match;
+                }
+                const placeholder = `<span data-math-inline="${placeholderIndex}"></span>`;
+                mathPlaceholders.push({ 
+                    placeholder, 
+                    original: match,
+                    type: 'inline',
+                    index: placeholderIndex
+                });
                 placeholderIndex++;
                 return placeholder;
             });
@@ -354,13 +378,18 @@
         
         // Restore math expressions after markdown parsing
         function restoreMath(html, mathPlaceholders) {
-            // Restore in reverse order to maintain indices
-            for (let i = mathPlaceholders.length - 1; i >= 0; i--) {
-                const { placeholder, original } = mathPlaceholders[i];
-                // Escape special regex characters in placeholder
-                const escapedPlaceholder = placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                html = html.replace(new RegExp(escapedPlaceholder, 'g'), original);
-            }
+            // Restore by finding the span elements and replacing them
+            mathPlaceholders.forEach(({ placeholder, original, type, index }) => {
+                if (type === 'display') {
+                    // Find span with data-math-display attribute
+                    const regex = new RegExp(`<span[^>]*data-math-display="${index}"[^>]*></span>`, 'gi');
+                    html = html.replace(regex, original);
+                } else {
+                    // Find span with data-math-inline attribute
+                    const regex = new RegExp(`<span[^>]*data-math-inline="${index}"[^>]*></span>`, 'gi');
+                    html = html.replace(regex, original);
+                }
+            });
             return html;
         }
 
@@ -381,17 +410,19 @@
             // Protect math, parse markdown, then restore math
             const { text: protectedText, mathPlaceholders } = protectMath(problems[problemId]);
             const html = marked.parse(protectedText);
-            const finalHtml = restoreMath(html, mathPlaceholders);
+            let finalHtml = restoreMath(html, mathPlaceholders);
             
             document.getElementById('content').innerHTML = finalHtml;
 
-            // Trigger MathJax rendering
+            // Clear previous MathJax rendering and re-render
             setTimeout(() => {
                 if (window.MathJax) {
+                    MathJax.typesetClear();
                     MathJax.typesetPromise().catch(function (err) {
                         console.error('MathJax rendering error:', err);
                         setTimeout(() => {
                             if (window.MathJax) {
+                                MathJax.typesetClear();
                                 MathJax.typesetPromise();
                             }
                         }, 500);
