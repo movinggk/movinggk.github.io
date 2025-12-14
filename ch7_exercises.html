@@ -226,7 +226,7 @@
             </header>
 
             <div id="content">
-                <p>Select a problem from the sidebar to view its solution.</p>
+                <p>Loading problems...</p>
             </div>
 
             <div class="comments-section">
@@ -252,10 +252,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        // Configure marked
+        // Configure marked for better rendering
         marked.setOptions({
             breaks: true,
-            gfm: true
+            gfm: true,
+            pedantic: false,
+            sanitize: false,
+            smartLists: true,
+            smartypants: false
         });
 
         let problems = {};
@@ -265,40 +269,42 @@
         fetch('ltfp_exercise_ch7.md')
             .then(response => response.text())
             .then(markdown => {
-                // Split by problem markers (## Problem X)
-                const problemRegex = /^## Problem (\d+)(\[(.*?)\])?/gm;
-                const lines = markdown.split('\n');
+                // Use regex to split by problem headers
+                // Match: ## Problem X or ## Problem X[title]
+                const problemPattern = /^## Problem (\d+)(\[.*?\])?$/gm;
+                const allMatches = [];
+                let match;
                 
-                let currentProblem = null;
-                let problemLines = [];
-                
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    const problemMatch = line.match(/^## Problem (\d+)(\[(.*?)\])?/);
-                    
-                    if (problemMatch) {
-                        // Save previous problem
-                        if (currentProblem !== null && problemLines.length > 0) {
-                            problems[currentProblem] = problemLines.join('\n');
-                        }
-                        // Start new problem
-                        currentProblem = problemMatch[1];
-                        problemLines = [line];
-                    } else if (line.trim() === '---') {
-                        // End of problem - save it
-                        if (currentProblem !== null && problemLines.length > 0) {
-                            problems[currentProblem] = problemLines.join('\n');
-                            currentProblem = null;
-                            problemLines = [];
-                        }
-                    } else if (currentProblem !== null) {
-                        problemLines.push(line);
-                    }
+                // Find all problem positions
+                while ((match = problemPattern.exec(markdown)) !== null) {
+                    allMatches.push({
+                        number: match[1],
+                        index: match.index,
+                        fullMatch: match[0]
+                    });
                 }
                 
-                // Save last problem if exists
-                if (currentProblem !== null && problemLines.length > 0) {
-                    problems[currentProblem] = problemLines.join('\n');
+                // Extract each problem
+                for (let i = 0; i < allMatches.length; i++) {
+                    const startIndex = allMatches[i].index;
+                    const endIndex = i < allMatches.length - 1 
+                        ? allMatches[i + 1].index 
+                        : markdown.length;
+                    
+                    let problemContent = markdown.substring(startIndex, endIndex);
+                    // Remove trailing '---' separator if it exists
+                    problemContent = problemContent.replace(/\n---\s*$/, '').trim();
+                    
+                    problems[allMatches[i].number] = problemContent;
+                }
+                
+                // Debug: log parsed problems
+                console.log('Parsed problems:', Object.keys(problems).sort((a, b) => parseInt(a) - parseInt(b)));
+                if (Object.keys(problems).length === 0) {
+                    console.error('No problems found! Check markdown format.');
+                    document.getElementById('content').innerHTML = 
+                        '<p>Error: No problems found in markdown file. Please check the file format.</p>';
+                    return;
                 }
 
                 // Set up navigation
@@ -312,7 +318,7 @@
             .catch(error => {
                 console.error('Error loading markdown:', error);
                 document.getElementById('content').innerHTML = 
-                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p>';
+                    '<p>Error loading content. Please ensure ltfp_exercise_ch7.md is available.</p><p>Error details: ' + error.message + '</p>';
             });
 
         function setupNavigation() {
@@ -346,19 +352,26 @@
             const html = marked.parse(problems[problemId]);
             document.getElementById('content').innerHTML = html;
 
-            // Trigger MathJax rendering
-            setTimeout(() => {
-                if (window.MathJax) {
-                    MathJax.typesetPromise().catch(function (err) {
+            // Scroll to top
+            document.getElementById('content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Trigger MathJax rendering - clear previous typesetting first
+            if (window.MathJax) {
+                MathJax.typesetClear();
+                setTimeout(() => {
+                    MathJax.typesetPromise().then(() => {
+                        console.log('MathJax rendered successfully');
+                    }).catch(function (err) {
                         console.error('MathJax rendering error:', err);
+                        // Retry once
                         setTimeout(() => {
                             if (window.MathJax) {
                                 MathJax.typesetPromise();
                             }
                         }, 500);
                     });
-                }
-            }, 100);
+                }, 200);
+            }
         }
 
         // Handle browser back/forward
