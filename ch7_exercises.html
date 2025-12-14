@@ -175,19 +175,6 @@
             color: #000;
         }
 
-        /* Definition and Theorem boxes */
-        .definition-box, .theorem-box {
-            border: 1px solid #000;
-            padding: 15px;
-            margin: 20px 0;
-        }
-
-        .definition-box strong, .theorem-box strong {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
         .comments-section {
             margin-top: 40px;
             padding-top: 20px;
@@ -425,56 +412,6 @@
             return html;
         }
 
-        // Wrap definitions and theorems in boxes
-        function wrapDefinitionsAndTheorems(html) {
-            // Create a temporary div to work with the HTML
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = html;
-            
-            // Process all paragraphs
-            const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
-            
-            paragraphs.forEach((p, index) => {
-                const strong = p.querySelector('strong');
-                if (strong) {
-                    const text = strong.textContent.trim();
-                    if (text.startsWith('Definition') || text.startsWith('Theorem')) {
-                        const boxType = text.startsWith('Definition') ? 'definition-box' : 'theorem-box';
-                        const box = document.createElement('div');
-                        box.className = boxType;
-                        
-                        // Add the title paragraph
-                        box.appendChild(p.cloneNode(true));
-                        
-                        // Collect following paragraphs until next definition/theorem/heading
-                        let nextElement = p.nextElementSibling;
-                        while (nextElement) {
-                            // Stop at headings or next definition/theorem
-                            if (nextElement.tagName === 'H2' || nextElement.tagName === 'H3') {
-                                break;
-                            }
-                            if (nextElement.tagName === 'P') {
-                                const nextStrong = nextElement.querySelector('strong');
-                                if (nextStrong && (nextStrong.textContent.trim().startsWith('Definition') || 
-                                                   nextStrong.textContent.trim().startsWith('Theorem'))) {
-                                    break;
-                                }
-                            }
-                            
-                            const toAdd = nextElement;
-                            nextElement = nextElement.nextElementSibling;
-                            box.appendChild(toAdd);
-                        }
-                        
-                        // Replace original paragraph with box
-                        p.parentNode.replaceChild(box, p);
-                    }
-                }
-            });
-            
-            return tempDiv.innerHTML;
-        }
-
         function loadProblem(problemId) {
             if (!problems[problemId]) {
                 document.getElementById('content').innerHTML = 
@@ -491,13 +428,10 @@
 
             // Protect math, parse markdown, then restore math
             const { text: protectedText, mathPlaceholders } = protectMath(problems[problemId]);
-            let html = marked.parse(protectedText);
-            html = restoreMath(html, mathPlaceholders);
+            const html = marked.parse(protectedText);
+            const finalHtml = restoreMath(html, mathPlaceholders);
             
-            // Wrap definitions and theorems in boxes
-            html = wrapDefinitionsAndTheorems(html);
-            
-            document.getElementById('content').innerHTML = html;
+            document.getElementById('content').innerHTML = finalHtml;
 
             // Trigger MathJax rendering
             setTimeout(() => {
