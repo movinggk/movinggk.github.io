@@ -91,6 +91,26 @@
             color: #000;
         }
 
+        .sidebar-head-link {
+            display: block;
+            color: #444;
+            text-decoration: none;
+            font-size: 0.95em;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+            background: #fff;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar-head-link:hover {
+            background: #f0f0f0;
+            border-color: #bbb;
+            color: #222;
+        }
+
         .content-area {
             flex: 1;
             padding: 30px 50px;
@@ -234,6 +254,7 @@
     <div class="container">
         <div class="sidebar">
             <h2>Ch.7 Exercises</h2>
+            <a href="ch7_exercises_head.html" class="sidebar-head-link">Introduction</a>
             <ul id="problem-list">
                 <li><a href="#" data-problem="1">Problem 1</a></li>
                 <li><a href="#" data-problem="2">Problem 2</a></li>
