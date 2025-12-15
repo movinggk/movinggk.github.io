@@ -5,9 +5,9 @@ This repository contains my personal GitHub Pages website.
 ## Structure
 
 - `index.html` - Main homepage with personal information
-- `ltfp_exercise_ch7.html` - Subpage displaying exercise solutions (uses JavaScript to load markdown)
+- `ch7_exercises.html` - Exercises page with sidebar navigation
 - `ltfp_exercise_ch7.md` - Source markdown file for exercises
-- `_config.yml` - Jekyll configuration (optional, for Jekyll-based rendering)
+- `photo.jpg` - Profile photo
 
 ## Setup Instructions
 
@@ -40,7 +40,7 @@ https://movinggk.github.io
 
 The exercises page will be at:
 ```
-https://movinggk.github.io/ltfp_exercise_ch7.html
+https://movinggk.github.io/ch7_exercises.html
 ```
 
 ## Features
@@ -56,28 +56,18 @@ https://movinggk.github.io/ltfp_exercise_ch7.html
 1. **Colors**: The site uses a purple gradient theme. You can customize colors in the `<style>` sections of the HTML files.
 
 2. **Adding More Pages**: 
-   - Create new HTML files following the structure of `ltfp_exercise_ch7.html`
+   - Create new HTML files following the structure of `ch7_exercises.html`
    - Add links to them in the "Links & Resources" section of `index.html`
 
 3. **Math Equations**: The exercises page uses MathJax to render LaTeX equations. Make sure your markdown uses `$` for inline math and `$$` for display math.
 
 ## Comments Feature
 
-The exercises page includes a comments section powered by **Giscus** (GitHub Discussions). 
-
-**To enable comments:**
-1. See `COMMENTS_SETUP.md` for detailed setup instructions
-2. Install the Giscus GitHub App on your repository
-3. Enable Discussions in your repository settings
-4. Get your repository and category IDs
-5. Update the placeholders in `ltfp_exercise_ch7.html`
-
-The comments widget will appear at the bottom of the exercises page once configured.
+The exercises page includes a comments section powered by **Giscus** (GitHub Discussions). The comments are already configured and will appear at the bottom of each problem page.
 
 ## Notes
 
-- The exercises page (`ltfp_exercise_ch7.html`) uses JavaScript to fetch and render the markdown file
+- The exercises page (`ch7_exercises.html`) uses JavaScript to fetch and render the markdown file
 - Math equations are rendered using MathJax
-- All placeholder text should be replaced with your actual information
-- The site works with or without Jekyll enabled
+- The sidebar navigation allows easy browsing between problems
 - Comments require GitHub Discussions to be enabled on your repository
