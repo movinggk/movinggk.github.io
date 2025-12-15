@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - PhD Candidate</title>
+    <title>Dongha Lee - PhD Candidate</title>
     <style>
         * {
             margin: 0;
@@ -20,12 +20,67 @@
         }
 
         .container {
-            max-width: 900px;
-            margin: 0 auto;
+            display: flex;
+            max-width: 1400px;
+            margin: 20px auto;
             background: #fff;
-            padding: 40px;
             border-radius: 4px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 220px;
+            padding: 25px 20px;
+            border-right: 1px solid #e0e0e0;
+            background: #fafafa;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: 500;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            color: #222;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar a {
+            color: #444;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 6px 8px;
+            display: block;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar a:hover {
+            background: #f0f0f0;
+            color: #222;
+        }
+
+        .sidebar a.active {
+            font-weight: 600;
+            background: #e8e8e8;
+            color: #000;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
         }
 
         header {
@@ -127,6 +182,18 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
             .info-item strong {
                 display: block;
                 margin-bottom: 5px;
@@ -136,12 +203,23 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Your Name</h1>
-            <p>PhD Candidate</p>
-        </header>
+        <div class="sidebar">
+            <h2>Posts</h2>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="ch7_exercises.html">Ch.7 Exercises</a></li>
+                <!-- Add more posts here as you create them -->
+                <!-- <li><a href="post2.html">Post Title 2</a></li> -->
+            </ul>
+        </div>
 
-        <div class="content">
+        <div class="main-content">
+            <header>
+                <h1>Dongha Lee</h1>
+                <p>PhD Candidate</p>
+            </header>
+
+            <div class="content">
             <section id="about">
                 <h2>About</h2>
                 <p>
@@ -153,16 +231,19 @@
             <section id="contact">
                 <h2>Contact Information</h2>
                 <div class="info-item">
-                    <strong>Email:</strong> your.email@university.edu
+                    <strong>Email:</strong> movinggk@snu.ac.kr
                 </div>
                 <div class="info-item">
-                    <strong>Institution:</strong> Your University
+                    <strong>Institution:</strong> Seoul National University
                 </div>
                 <div class="info-item">
-                    <strong>Department:</strong> Your Department
+                    <strong>Department:</strong> Department of Science Education
                 </div>
                 <div class="info-item">
-                    <strong>Location:</strong> City, Country
+                    <strong>Major:</strong> Physics
+                </div>
+                <div class="info-item">
+                    <strong>Location:</strong> Seoul, South Korea
                 </div>
             </section>
 
@@ -196,11 +277,12 @@
                     <!-- <a href="#" class="link-button">Google Scholar</a> -->
                 </div>
             </section>
-        </div>
+            </div>
 
-        <footer>
-            <p>&copy; 2024 Your Name. All rights reserved.</p>
-        </footer>
+            <footer>
+                <p>&copy; 2024 Dongha Lee. All rights reserved.</p>
+            </footer>
+        </div>
     </div>
 </body>
 </html>
