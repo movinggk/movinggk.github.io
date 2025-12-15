@@ -24,23 +24,27 @@
         }
 
         body {
-            font-family: Times New Roman, serif;
-            line-height: 1.6;
-            color: #000;
-            background: #fff;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8f8f8;
         }
 
         .container {
             display: flex;
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
 
         .sidebar {
             width: 250px;
-            padding: 20px;
-            border-right: 1px solid #000;
-            background: #fff;
+            padding: 25px 20px;
+            border-right: 1px solid #e0e0e0;
+            background: #fafafa;
             position: sticky;
             top: 0;
             height: 100vh;
@@ -48,11 +52,12 @@
         }
 
         .sidebar h2 {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            font-weight: normal;
-            border-bottom: 1px solid #000;
-            padding-bottom: 5px;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: 500;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            color: #222;
         }
 
         .sidebar ul {
@@ -60,56 +65,70 @@
         }
 
         .sidebar li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .sidebar a {
-            color: #000;
-            text-decoration: underline;
+            color: #444;
+            text-decoration: none;
             font-size: 0.9em;
+            padding: 6px 8px;
+            display: block;
+            border-radius: 3px;
+            transition: all 0.2s ease;
         }
 
         .sidebar a:hover {
-            text-decoration: none;
+            background: #f0f0f0;
+            color: #222;
         }
 
         .sidebar a.active {
-            font-weight: bold;
-            text-decoration: none;
+            font-weight: 600;
+            background: #e8e8e8;
+            color: #000;
         }
 
         .content-area {
             flex: 1;
-            padding: 20px 40px;
+            padding: 30px 50px;
+            background: #fff;
         }
 
         .back-link {
             display: inline-block;
-            margin-bottom: 15px;
-            color: #000;
-            text-decoration: underline;
+            margin-bottom: 20px;
+            color: #555;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            transition: all 0.2s ease;
         }
 
         .back-link:hover {
-            text-decoration: none;
+            background: #f5f5f5;
+            border-color: #bbb;
+            color: #222;
         }
 
         header {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #000;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
         header h1 {
-            color: #000;
-            font-size: 1.8em;
-            margin-bottom: 5px;
-            font-weight: normal;
+            color: #222;
+            font-size: 2em;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
         }
 
         header p {
-            color: #000;
-            font-size: 1em;
+            color: #666;
+            font-size: 1.05em;
         }
 
         .problem-content {
@@ -121,13 +140,13 @@
         }
 
         h2 {
-            color: #000;
-            font-size: 1.5em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #000;
-            font-weight: normal;
+            color: #222;
+            font-size: 1.6em;
+            margin-top: 35px;
+            margin-bottom: 18px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            font-weight: 500;
         }
 
         h2:first-of-type {
@@ -136,25 +155,27 @@
         }
 
         h3 {
-            color: #000;
-            font-size: 1.2em;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-weight: normal;
+            color: #333;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-weight: 500;
         }
 
         p {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
+            color: #444;
         }
 
         ul, ol {
-            margin: 15px 0;
-            padding-left: 30px;
+            margin: 18px 0;
+            padding-left: 35px;
         }
 
         li {
-            margin-bottom: 10px;
-            line-height: 1.6;
+            margin-bottom: 12px;
+            line-height: 1.7;
+            color: #444;
         }
 
         ul li {
@@ -167,27 +188,28 @@
 
         hr {
             border: none;
-            border-top: 1px solid #000;
-            margin: 30px 0;
+            border-top: 2px solid #e0e0e0;
+            margin: 35px 0;
         }
 
         strong {
-            color: #000;
+            color: #222;
+            font-weight: 600;
         }
 
         .comments-section {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #000;
+            margin-top: 50px;
+            padding-top: 25px;
+            border-top: 2px solid #e0e0e0;
         }
 
         .comments-section h2 {
-            color: #000;
-            font-size: 1.5em;
-            margin-bottom: 15px;
+            color: #222;
+            font-size: 1.6em;
+            margin-bottom: 20px;
             border-top: none;
             padding-top: 0;
-            font-weight: normal;
+            font-weight: 500;
         }
 
         @media (max-width: 768px) {
