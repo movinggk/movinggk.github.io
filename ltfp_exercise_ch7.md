@@ -841,7 +841,7 @@ $$
 
 ### Solution
 
-(a) $f$ is linear in $\varphi$, i.e. there is $v \in \mathcal H$ such that $f(x) = \langle v, \varphi(x) \rangle$ for all $x \in \mathcal X$. Letting $\mathcal H_\varphi = \mathrm{cl}\, \mathrm{span} \{\varphi(x) \mid x \in \mathcal X\}$, $v = v_\parallel + v_\perp$ where $v_\parallel \in \mathcal H_\varphi$ and $v_\perp \in \mathcal H / \mathcal H_\varphi$ and $f(x) = \langle v_\parallel, \varphi(x) \rangle$. Hence,
+(a) $f$ is linear in $\varphi$, i.e. there is $v \in \mathcal H$ such that $f(x) = \langle v, \varphi(x) \rangle$ for all $x \in \mathcal X$. Letting $\mathcal H_\varphi = \mathrm{cl}\, \mathrm{span} \{\varphi(x) \mid x \in \mathcal X\}$, $v = v_\parallel + v_\perp$ where $v_\parallel \in \mathcal H_\varphi$ and $v_\perp \in \mathcal H_\varphi^\perp$ and $f(x) = \langle v_\parallel, \varphi(x) \rangle$. Hence,
 $$
 \left| \int_{\mathcal X} f(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i f(x_i) \right| = \left|\left< v_\parallel, \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right>\right|.
 $$
@@ -886,8 +886,10 @@ $$
 \min_{\alpha \in \mathbb R^n} \mathcal L(\alpha) = \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} - {\alpha^\star}^\top K \alpha^\star.
 $$
 (c)
+$$
 \mathbb E\left[\left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2\right] = \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} + \sum^n_{i = 1} \alpha_i^2 \int_{\mathcal X} k(x, x) \,\mathrm{d} {p(x)}\\
 + \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j (1 - \delta_{ij}) \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)}.
+$$
 
 If $\alpha_i = 1/n$ for all $i = 1, \cdots, n$,
 $$
@@ -909,7 +911,7 @@ $$
 
 ### Solution
 
-Let $\zeta^\pm_i = (1 \pm y_i) / (2N_\pm)$ for all $i = 1, \cdots, n$, where $N_\pm$ be a number of positive(``$+$'' subscript) and negative(``$-$'' subscript) labeled data, so that $\sum^n_{i = 1} \zeta^\pm_i = 1$. Then,
+Let $\zeta^\pm_i = (1 \pm y_i) / (2N_\pm)$ for all $i = 1, \cdots, n$, where $N_\pm$ be a number of positive("$+$" subscript) and negative("$-$" subscript) labeled data, so that $\sum^n_{i = 1} \zeta^\pm_i = 1$. Then,
 $$
 \mu_\pm = \sum^n_{i = 1} \zeta^\pm_i \varphi(x_i),
 $$
