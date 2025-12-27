@@ -12,19 +12,7 @@
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
-                processEnvironments: true,
-                linebreaks: { automatic: true },
-                tags: 'ams',
-                ams: {
-                    multlineWidth: '85%',
-                    multlineIndent: '2em',
-                    tagIndent: '0.8em'
-                }
-            },
-            options: {
-                ignoreHtmlClass: 'tex2jax_ignore',
-                processHtmlClass: 'tex2jax_process',
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                processEnvironments: true
             }
         };
     </script>
@@ -298,28 +286,6 @@
             font-weight: 500;
         }
 
-        /* Ensure MathJax displays multi-line math properly */
-        .MathJax {
-            white-space: normal !important;
-        }
-        
-        .MathJax_Display {
-            white-space: normal !important;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-        
-        /* Preserve whitespace in math expressions before MathJax processes them */
-        .math-display {
-            white-space: pre-wrap;
-            margin: 1em 0;
-        }
-        
-        /* Ensure MathJax processes math correctly */
-        .MathJax_Display {
-            margin: 1em 0 !important;
-        }
-
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -576,12 +542,6 @@
                 // Use split/join for exact replacement
                 html = html.split(placeholder).join(original);
             }
-            
-            // Post-process: Remove paragraph tags that only contain display math
-            // This prevents whitespace collapse and ensures proper rendering
-            html = html.replace(/<p>\s*(\$\$[\s\S]*?\$\$)\s*<\/p>/g, '$1');
-            html = html.replace(/<p>\s*(\\\[[\s\S]*?\\\])\s*<\/p>/g, '$1');
-            
             return html;
         }
 
@@ -602,39 +562,23 @@
             // Protect math, parse markdown, then restore math
             const { text: protectedText, mathPlaceholders } = protectMath(problems[problemId]);
             const html = marked.parse(protectedText);
-            let finalHtml = restoreMath(html, mathPlaceholders);
-            
-            // Ensure display math blocks are not wrapped in paragraph tags
-            // and preserve their structure for MathJax
-            finalHtml = finalHtml.replace(/<p>(\s*\$\$[\s\S]*?\$\$\s*)<\/p>/g, '<div class="math-display">$1</div>');
-            finalHtml = finalHtml.replace(/<p>(\s*\\\[[\s\S]*?\\\]\s*)<\/p>/g, '<div class="math-display">$1</div>');
+            const finalHtml = restoreMath(html, mathPlaceholders);
             
             document.getElementById('content').innerHTML = finalHtml;
 
-            // Trigger MathJax rendering - wait for MathJax to be ready
-            const renderMath = () => {
-                if (window.MathJax && window.MathJax.typesetPromise) {
-                    MathJax.typesetPromise([document.getElementById('content')]).catch(function (err) {
+            // Trigger MathJax rendering
+            setTimeout(() => {
+                if (window.MathJax) {
+                    MathJax.typesetPromise().catch(function (err) {
                         console.error('MathJax rendering error:', err);
-                        // Retry after a delay
                         setTimeout(() => {
-                            if (window.MathJax && window.MathJax.typesetPromise) {
-                                MathJax.typesetPromise([document.getElementById('content')]);
+                            if (window.MathJax) {
+                                MathJax.typesetPromise();
                             }
                         }, 500);
                     });
-                } else {
-                    // MathJax not loaded yet, wait and retry
-                    setTimeout(renderMath, 100);
                 }
-            };
-            
-            // Start rendering
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', renderMath);
-            } else {
-                setTimeout(renderMath, 100);
-            }
+            }, 100);
         }
 
         // Handle browser back/forward

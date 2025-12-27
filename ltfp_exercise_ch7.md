@@ -828,13 +828,13 @@ $$
 ---
 
 ## Problem 19[Kernel quadrature]
-We consider a probability measure $p$ on a set $\mathcal X$ equipped with a positive-definite kernel $k$ with feature map $\varphi: \mathcal X \to \mathcal H$. For a function $f: \mathcal X \to \mathbb R$ that is linear in $\varphi$, we want to approximate $\int_{\mathcal X} f(x) \,\mathrm{d} {p(x)}$ from a linear combinatioin $\sum^n_{i = 1} \alpha_i f(x_i)$ with $\alpha \in \mathbb R^n$.
-\item Show that
+*We consider a probability measure $p$ on a set $\mathcal X$ equipped with a positive-definite kernel $k$ with feature map $\varphi: \mathcal X \to \mathcal H$. For a function $f: \mathcal X \to \mathbb R$ that is linear in $\varphi$, we want to approximate $\int_{\mathcal X} f(x) \,\mathrm{d} {p(x)}$ from a linear combinatioin $\sum^n_{i = 1} \alpha_i f(x_i)$ with $\alpha \in \mathbb R^n$.*
+- *Show that*
 $$
 \left| \int_{\mathcal X} f(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i f(x_i) \right| \leq \|f\| \cdot \left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|.
 $$
-\item Express the square of the right side with the kernel function and show how to minimize it with respect to $\alpha \in \mathbb R^n$.
-\item Show that if the points $x_1, \cdots, x_n$ are sampled i.i.d. from $p$ and $\alpha_i = 1/n$ for all $i$, then
+- *Express the square of the right side with the kernel function and show how to minimize it with respect to $\alpha \in \mathbb R^n$.*
+- *Show that if the points $x_1, \cdots, x_n$ are sampled i.i.d. from $p$ and $\alpha_i = 1/n$ for all $i$, then*
 $$
 \mathbb E \left[\left\|\int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2 \right] \leq \frac{1}{n} \mathbb E[k(x, x)].
 $$
@@ -867,8 +867,10 @@ $$
 $$
 (b)
 $$
-\left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2 = \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} \\
-+ \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j k(x_i, x_j) - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} k(x, x_i) \,\mathrm{d} {p(x)}
+\begin{aligned}
+\left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2 &= \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} \\
+&\quad + \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j k(x_i, x_j) - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} k(x, x_i) \,\mathrm{d} {p(x)}
+\end{aligned}
 $$
 
 Let the right hand side be $\mathcal L(\alpha)$. Then, the Hessian of $\mathcal L$ is
@@ -889,8 +891,10 @@ $$
 $$
 (c)
 $$
-\mathbb E\left[\left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2\right] = \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} + \sum^n_{i = 1} \alpha_i^2 \int_{\mathcal X} k(x, x) \,\mathrm{d} {p(x)}\\
-+ \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j (1 - \delta_{ij}) \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)}.
+\begin{aligned}
+\mathbb E\left[\left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2\right] &= \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} + \sum^n_{i = 1} \alpha_i^2 \int_{\mathcal X} k(x, x) \,\mathrm{d} {p(x)}\\
+&\quad + \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j (1 - \delta_{ij}) \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)}.
+\end{aligned}
 $$
 
 If $\alpha_i = 1/n$ for all $i = 1, \cdots, n$,
