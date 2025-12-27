@@ -12,7 +12,13 @@
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']],
                 processEscapes: true,
-                processEnvironments: true
+                processEnvironments: true,
+                linebreaks: { automatic: true }
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process',
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
             }
         };
     </script>
@@ -284,6 +290,17 @@
             border-top: none;
             padding-top: 0;
             font-weight: 500;
+        }
+
+        /* Ensure MathJax displays multi-line math properly */
+        .MathJax {
+            white-space: normal !important;
+        }
+        
+        .MathJax_Display {
+            white-space: normal !important;
+            overflow-x: auto;
+            overflow-y: hidden;
         }
 
         @media (max-width: 768px) {

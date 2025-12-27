@@ -866,8 +866,10 @@ $$
 \left| \int_{\mathcal X} f(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i f(x_i) \right| \leq \|f\| \left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|.
 $$
 (b)
+$$
 \left\| \int_{\mathcal X} \varphi(x) \,\mathrm{d} {p(x)} - \sum^n_{i = 1} \alpha_i \varphi(x_i) \right\|^2 = \int_{\mathcal X} \int_{\mathcal X} k(x, y) \,\mathrm{d} {p(x)} \,\mathrm{d} {p(y)} \\
 + \sum^n_{i = 1} \sum^n_{j = 1} \alpha_i \alpha_j k(x_i, x_j) - 2 \sum^n_{i = 1} \alpha_i \int_{\mathcal X} k(x, x_i) \,\mathrm{d} {p(x)}
+$$
 
 Let the right hand side be $\mathcal L(\alpha)$. Then, the Hessian of $\mathcal L$ is
 $$
